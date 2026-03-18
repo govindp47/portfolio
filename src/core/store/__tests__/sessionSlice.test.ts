@@ -8,7 +8,7 @@ describe('sessionSlice', () => {
   })
 
   it('bootPlayed seeds false when sessionStorage is empty', async () => {
-    const { createSessionSlice } = await import('./sessionSlice')
+    const { createSessionSlice } = await import('../sessionSlice')
     const useStore = create((...args: Parameters<typeof createSessionSlice>) => ({
       ...createSessionSlice(...args),
     }))
@@ -17,7 +17,7 @@ describe('sessionSlice', () => {
 
   it('bootPlayed seeds true when sessionStorage key is set', async () => {
     sessionStorage.setItem('govindos-boot-played', 'true')
-    const { createSessionSlice } = await import('./sessionSlice')
+    const { createSessionSlice } = await import('../sessionSlice')
     const useStore = create((...args: Parameters<typeof createSessionSlice>) => ({
       ...createSessionSlice(...args),
     }))
@@ -25,7 +25,7 @@ describe('sessionSlice', () => {
   })
 
   it('markBootPlayed sets flag and writes sessionStorage', async () => {
-    const { createSessionSlice } = await import('./sessionSlice')
+    const { createSessionSlice } = await import('../sessionSlice')
     const useStore = create((...args: Parameters<typeof createSessionSlice>) => ({
       ...createSessionSlice(...args),
     }))
@@ -35,7 +35,7 @@ describe('sessionSlice', () => {
   })
 
   it('dismissGuidedFlow sets guidedFlowDismissed', async () => {
-    const { createSessionSlice } = await import('./sessionSlice')
+    const { createSessionSlice } = await import('../sessionSlice')
     const useStore = create((...args: Parameters<typeof createSessionSlice>) => ({
       ...createSessionSlice(...args),
     }))
@@ -44,7 +44,7 @@ describe('sessionSlice', () => {
   })
 
   it('markContentLoaded sets contentLoaded', async () => {
-    const { createSessionSlice } = await import('./sessionSlice')
+    const { createSessionSlice } = await import('../sessionSlice')
     const useStore = create((...args: Parameters<typeof createSessionSlice>) => ({
       ...createSessionSlice(...args),
     }))

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { create } from 'zustand'
-import { createTerminalSlice, type TerminalSlice } from './terminalSlice'
+import { createTerminalSlice, type TerminalSlice } from '../terminalSlice'
 
 const makeStore = () =>
   create<TerminalSlice>()((...args) => ({ ...createTerminalSlice(...args) }))
