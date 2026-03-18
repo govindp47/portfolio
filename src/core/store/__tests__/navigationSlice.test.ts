@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import {
   createNavigationSlice,
   type NavigationSlice,
-} from './navigationSlice'
+} from '../navigationSlice'
 
 const makeStore = () => create<NavigationSlice>()((...args) => ({
   ...createNavigationSlice(...args),

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { create } from 'zustand'
-import { createGameSlice, type GameSlice } from './gameSlice'
+import { createGameSlice, type GameSlice } from '../gameSlice'
 
 const makeStore = () =>
   create<GameSlice>()((...args) => ({ ...createGameSlice(...args) }))

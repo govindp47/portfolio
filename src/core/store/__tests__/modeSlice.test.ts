@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { create } from 'zustand'
-import { createModeSlice, type ModeSlice } from './modeSlice'
+import { createModeSlice, type ModeSlice } from '../modeSlice'
 
 const makeStore = () =>
   create<ModeSlice>()((...args) => ({ ...createModeSlice(...args) }))

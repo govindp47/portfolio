@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { create } from 'zustand'
-import { createContentSlice, type ContentSlice } from './contentSlice'
+import { createContentSlice, type ContentSlice } from '../contentSlice'
 import type { ContentState } from '@/core/types'
 
 const makeStore = () =>
