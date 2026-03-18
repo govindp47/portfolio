@@ -1,0 +1,352 @@
+[
+  {
+    "id": "kotlin",
+    "label": "Kotlin",
+    "type": "language",
+    "mastery": 92,
+    "depth": "expert",
+    "confidence": 92,
+    "description": "Primary language for Android and backend JVM services. Used daily in production across coroutines, sealed classes, and extension functions.",
+    "projectRefs": ["realtime-chat-engine", "android-compose-taskboard", "govindos-portfolio"]
+  },
+  {
+    "id": "python",
+    "label": "Python",
+    "type": "language",
+    "mastery": 80,
+    "depth": "advanced",
+    "confidence": 80,
+    "description": "Used for scripting, data processing pipelines, and competitive programming problem-solving utilities.",
+    "projectRefs": ["codeforces-tracker"]
+  },
+  {
+    "id": "java",
+    "label": "Java",
+    "type": "language",
+    "mastery": 75,
+    "depth": "advanced",
+    "confidence": 75,
+    "description": "Foundation Android language. Maintained legacy codebases and migrated modules to Kotlin interop patterns.",
+    "projectRefs": ["android-compose-taskboard"]
+  },
+  {
+    "id": "typescript",
+    "label": "TypeScript",
+    "type": "language",
+    "mastery": 82,
+    "depth": "advanced",
+    "confidence": 82,
+    "description": "Used in full-stack and portfolio projects. Strict mode enforced; leverages discriminated unions and utility types.",
+    "projectRefs": ["govindos-portfolio"]
+  },
+  {
+    "id": "javascript",
+    "label": "JavaScript",
+    "type": "language",
+    "mastery": 72,
+    "depth": "advanced",
+    "confidence": 72,
+    "description": "ES2020+ features, async/await patterns, and DOM manipulation. Substrate for TypeScript work.",
+    "projectRefs": ["govindos-portfolio"]
+  },
+  {
+    "id": "dart",
+    "label": "Dart",
+    "type": "language",
+    "mastery": 70,
+    "depth": "advanced",
+    "confidence": 70,
+    "description": "Flutter's primary language. Used for async stream handling, null safety patterns, and widget composition.",
+    "projectRefs": ["expense-tracker-flutter"]
+  },
+  {
+    "id": "sql",
+    "label": "SQL",
+    "type": "language",
+    "mastery": 78,
+    "depth": "advanced",
+    "confidence": 78,
+    "description": "PostgreSQL and SQLite for schema design, query optimization, and migrations in backend and Android (Room) projects.",
+    "projectRefs": ["event-platform-api", "android-compose-taskboard"]
+  },
+  {
+    "id": "bash",
+    "label": "Bash",
+    "type": "language",
+    "mastery": 65,
+    "depth": "advanced",
+    "confidence": 65,
+    "description": "Shell scripting for CI/CD pipeline automation, build tooling, and deployment scripts.",
+    "projectRefs": ["event-platform-api"]
+  },
+  {
+    "id": "go",
+    "label": "Go",
+    "type": "language",
+    "mastery": 74,
+    "depth": "advanced",
+    "confidence": 74,
+    "description": "Used for high-throughput REST microservices and CLI tooling. Leverages goroutines and channel-based concurrency.",
+    "projectRefs": ["event-platform-api"]
+  },
+  {
+    "id": "cpp",
+    "label": "C++",
+    "type": "language",
+    "mastery": 68,
+    "depth": "advanced",
+    "confidence": 68,
+    "description": "Competitive programming workhorse. STL mastery — maps, sets, priority queues, and custom comparators.",
+    "projectRefs": ["codeforces-tracker"]
+  },
+  {
+    "id": "jetpack-compose",
+    "label": "Jetpack Compose",
+    "type": "concept",
+    "mastery": 90,
+    "depth": "expert",
+    "confidence": 90,
+    "description": "Declarative Android UI toolkit. Deep familiarity with recomposition lifecycle, state hoisting, custom layouts, and animation APIs.",
+    "projectRefs": ["android-compose-taskboard"]
+  },
+  {
+    "id": "coroutines",
+    "label": "Kotlin Coroutines",
+    "type": "concept",
+    "mastery": 88,
+    "depth": "expert",
+    "confidence": 88,
+    "description": "Structured concurrency for Android and JVM. Scopes, dispatchers, Flow operators, and exception handling in production.",
+    "projectRefs": ["realtime-chat-engine", "android-compose-taskboard"]
+  },
+  {
+    "id": "mvvm",
+    "label": "MVVM",
+    "type": "concept",
+    "mastery": 88,
+    "depth": "expert",
+    "confidence": 88,
+    "description": "Model-View-ViewModel applied with Android ViewModel, StateFlow, and unidirectional data flow principles.",
+    "projectRefs": ["android-compose-taskboard", "expense-tracker-flutter"]
+  },
+  {
+    "id": "clean-architecture",
+    "label": "Clean Architecture",
+    "type": "concept",
+    "mastery": 83,
+    "depth": "expert",
+    "confidence": 83,
+    "description": "Layer-based separation into data, domain, and presentation layers. Domain models isolated from framework dependencies.",
+    "projectRefs": ["android-compose-taskboard", "event-platform-api"]
+  },
+  {
+    "id": "dependency-injection",
+    "label": "Dependency Injection",
+    "type": "concept",
+    "mastery": 85,
+    "depth": "expert",
+    "confidence": 85,
+    "description": "Hilt on Android and manual DI in Go services. Constructor injection preferred; interface-driven for testability.",
+    "projectRefs": ["android-compose-taskboard", "event-platform-api"]
+  },
+  {
+    "id": "rest-api",
+    "label": "REST API Design",
+    "type": "concept",
+    "mastery": 84,
+    "depth": "expert",
+    "confidence": 84,
+    "description": "Resource-oriented API design, versioning strategies, HTTP semantics, pagination, and OpenAPI documentation.",
+    "projectRefs": ["realtime-chat-engine", "event-platform-api", "codeforces-tracker"]
+  },
+  {
+    "id": "websockets",
+    "label": "WebSockets",
+    "type": "concept",
+    "mastery": 78,
+    "depth": "advanced",
+    "confidence": 78,
+    "description": "Full-duplex communication for real-time features. Handled connection lifecycle, reconnection strategies, and heartbeat protocols.",
+    "projectRefs": ["realtime-chat-engine"]
+  },
+  {
+    "id": "rxjava",
+    "label": "RxJava",
+    "type": "concept",
+    "mastery": 62,
+    "depth": "familiar",
+    "confidence": 62,
+    "description": "Reactive extensions used in legacy Android codebases. Observable chains, schedulers, and backpressure handling.",
+    "projectRefs": ["android-compose-taskboard"]
+  },
+  {
+    "id": "unit-testing",
+    "label": "Unit Testing",
+    "type": "concept",
+    "mastery": 80,
+    "depth": "advanced",
+    "confidence": 80,
+    "description": "JUnit5, MockK for Kotlin, and Vitest for TypeScript. Test pyramid adherence with emphasis on domain layer isolation.",
+    "projectRefs": ["android-compose-taskboard", "event-platform-api", "govindos-portfolio"]
+  },
+  {
+    "id": "ci-cd",
+    "label": "CI/CD",
+    "type": "concept",
+    "mastery": 76,
+    "depth": "advanced",
+    "confidence": 76,
+    "description": "GitHub Actions pipelines for build, test, and deploy workflows. Gradle build caching and Docker-based deployment stages.",
+    "projectRefs": ["event-platform-api", "govindos-portfolio"]
+  },
+  {
+    "id": "graph-algorithms",
+    "label": "Graph Algorithms",
+    "type": "concept",
+    "mastery": 82,
+    "depth": "advanced",
+    "confidence": 82,
+    "description": "BFS, DFS, Dijkstra, Bellman-Ford, topological sort, and union-find. Applied in both contest and system design contexts.",
+    "projectRefs": ["codeforces-tracker"]
+  },
+  {
+    "id": "dynamic-programming",
+    "label": "Dynamic Programming",
+    "type": "concept",
+    "mastery": 80,
+    "depth": "advanced",
+    "confidence": 80,
+    "description": "Top-down memoization and bottom-up tabulation. Knapsack, LCS, matrix chain, digit DP, and bitmask DP patterns.",
+    "projectRefs": ["codeforces-tracker"]
+  },
+  {
+    "id": "system-design",
+    "label": "System Design",
+    "type": "concept",
+    "mastery": 75,
+    "depth": "advanced",
+    "confidence": 75,
+    "description": "Distributed systems fundamentals: CAP theorem, load balancing, caching strategies, message queues, and API gateway patterns.",
+    "projectRefs": ["realtime-chat-engine", "event-platform-api"]
+  },
+  {
+    "id": "state-management",
+    "label": "State Management",
+    "type": "concept",
+    "mastery": 83,
+    "depth": "advanced",
+    "confidence": 83,
+    "description": "Redux/Zustand for web and StateFlow/MVI for Android. Predictable state machines with immutable state transitions.",
+    "projectRefs": ["govindos-portfolio", "android-compose-taskboard"]
+  },
+  {
+    "id": "android-development",
+    "label": "Android Development",
+    "type": "domain",
+    "mastery": 91,
+    "depth": "expert",
+    "confidence": 91,
+    "description": "End-to-end Android application development: architecture, lifecycle management, performance profiling, and Play Store deployment.",
+    "projectRefs": ["android-compose-taskboard", "realtime-chat-engine"]
+  },
+  {
+    "id": "backend-development",
+    "label": "Backend Development",
+    "type": "domain",
+    "mastery": 78,
+    "depth": "advanced",
+    "confidence": 78,
+    "description": "REST microservices, authentication flows, database integration, and horizontal scaling strategies.",
+    "projectRefs": ["realtime-chat-engine", "event-platform-api"]
+  },
+  {
+    "id": "competitive-programming",
+    "label": "Competitive Programming",
+    "type": "domain",
+    "mastery": 80,
+    "depth": "advanced",
+    "confidence": 80,
+    "description": "Codeforces and LeetCode competitor. 340+ problems solved. Strong in DP, graphs, and number theory.",
+    "projectRefs": ["codeforces-tracker"]
+  },
+  {
+    "id": "data-structures-algorithms",
+    "label": "Data Structures & Algorithms",
+    "type": "domain",
+    "mastery": 84,
+    "depth": "expert",
+    "confidence": 84,
+    "description": "Segment trees, tries, heaps, balanced BSTs, and advanced graph structures applied in both competitive and production contexts.",
+    "projectRefs": ["codeforces-tracker"]
+  },
+  {
+    "id": "ui-ux",
+    "label": "UI/UX Design",
+    "type": "domain",
+    "mastery": 68,
+    "depth": "advanced",
+    "confidence": 68,
+    "description": "Design systems, component libraries, motion design, and accessibility principles. Figma for prototyping.",
+    "projectRefs": ["govindos-portfolio", "expense-tracker-flutter"]
+  },
+  {
+    "id": "devops",
+    "label": "DevOps",
+    "type": "domain",
+    "mastery": 65,
+    "depth": "advanced",
+    "confidence": 65,
+    "description": "Docker, container orchestration basics, environment parity, and infrastructure-as-code with lightweight configs.",
+    "projectRefs": ["event-platform-api"]
+  },
+  {
+    "id": "flutter",
+    "label": "Flutter",
+    "type": "domain",
+    "mastery": 70,
+    "depth": "advanced",
+    "confidence": 70,
+    "description": "Cross-platform mobile development. Widget tree optimization, custom painters, and platform channel integration.",
+    "projectRefs": ["expense-tracker-flutter"]
+  },
+  {
+    "id": "firebase",
+    "label": "Firebase",
+    "type": "domain",
+    "mastery": 72,
+    "depth": "advanced",
+    "confidence": 72,
+    "description": "Firestore, Authentication, Cloud Messaging, and Crashlytics. Real-time listeners and offline persistence patterns.",
+    "projectRefs": ["realtime-chat-engine", "expense-tracker-flutter"]
+  },
+  {
+    "id": "database-design",
+    "label": "Database Design",
+    "type": "domain",
+    "mastery": 76,
+    "depth": "advanced",
+    "confidence": 76,
+    "description": "Relational schema normalization, index strategy, query planning, and migration management with golang-migrate.",
+    "projectRefs": ["event-platform-api", "android-compose-taskboard"]
+  },
+  {
+    "id": "machine-learning",
+    "label": "Machine Learning",
+    "type": "domain",
+    "mastery": 55,
+    "depth": "familiar",
+    "confidence": 55,
+    "description": "Supervised learning fundamentals, scikit-learn pipelines, and TensorFlow Lite model integration in Android apps.",
+    "projectRefs": []
+  },
+  {
+    "id": "react",
+    "label": "React",
+    "type": "domain",
+    "mastery": 76,
+    "depth": "advanced",
+    "confidence": 76,
+    "description": "Component architecture, hooks, concurrent rendering, and performance optimizations via memoization and virtualization.",
+    "projectRefs": ["govindos-portfolio"]
+  }
+]

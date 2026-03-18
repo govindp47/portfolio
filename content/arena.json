@@ -1,0 +1,209 @@
+{
+  "platforms": [
+    {
+      "platform": "LeetCode",
+      "rating": 1852,
+      "context": "Top 7% globally — Knight tier",
+      "profileUrl": "https://leetcode.com/govind-kumarr"
+    },
+    {
+      "platform": "Codeforces",
+      "rating": 1440,
+      "context": "Specialist — Top 35% of rated users",
+      "profileUrl": "https://codeforces.com/profile/govind_k"
+    },
+    {
+      "platform": "CodeChef",
+      "rating": 1820,
+      "context": "4-Star — Division 2 contest regular",
+      "profileUrl": "https://codechef.com/users/govind_k"
+    }
+  ],
+  "difficultyBreakdown": [
+    {
+      "label": "Easy",
+      "count": 182,
+      "percentage": 53
+    },
+    {
+      "label": "Medium",
+      "count": 124,
+      "percentage": 37
+    },
+    {
+      "label": "Hard",
+      "count": 34,
+      "percentage": 10
+    }
+  ],
+  "patterns": [
+    {
+      "pattern": "Dynamic Programming",
+      "count": 68,
+      "problemRefs": [
+        "Coin Change II",
+        "Edit Distance",
+        "Burst Balloons",
+        "Strange Printer",
+        "Maximum Profit in Job Scheduling",
+        "Minimum Cost to Cut a Stick"
+      ]
+    },
+    {
+      "pattern": "Graph Traversal",
+      "count": 52,
+      "problemRefs": [
+        "Number of Islands",
+        "Course Schedule II",
+        "Word Ladder",
+        "Alien Dictionary",
+        "Critical Connections in a Network",
+        "Minimum Height Trees"
+      ]
+    },
+    {
+      "pattern": "Sliding Window",
+      "count": 38,
+      "problemRefs": [
+        "Minimum Window Substring",
+        "Longest Substring Without Repeating Characters",
+        "Fruit Into Baskets",
+        "Longest Repeating Character Replacement",
+        "Count of Subarrays with K Different Integers"
+      ]
+    },
+    {
+      "pattern": "Binary Search",
+      "count": 34,
+      "problemRefs": [
+        "Koko Eating Bananas",
+        "Find Minimum in Rotated Sorted Array II",
+        "Split Array Largest Sum",
+        "Capacity to Ship Packages Within D Days",
+        "Magnetic Force Between Two Balls"
+      ]
+    },
+    {
+      "pattern": "Two Pointers",
+      "count": 42,
+      "problemRefs": [
+        "Trapping Rain Water",
+        "Container With Most Water",
+        "3Sum Closest",
+        "Sort Colors",
+        "Minimum Operations to Reduce X to Zero"
+      ]
+    },
+    {
+      "pattern": "Backtracking",
+      "count": 28,
+      "problemRefs": [
+        "Word Search II",
+        "N-Queens",
+        "Sudoku Solver",
+        "Palindrome Partitioning",
+        "Expression Add Operators"
+      ]
+    },
+    {
+      "pattern": "Heap / Priority Queue",
+      "count": 30,
+      "problemRefs": [
+        "Find Median from Data Stream",
+        "Task Scheduler",
+        "Merge K Sorted Lists",
+        "Reorganize String",
+        "IPO"
+      ]
+    },
+    {
+      "pattern": "Bitmask DP",
+      "count": 18,
+      "problemRefs": [
+        "Shortest Path Visiting All Nodes",
+        "Minimum XOR Sum of Two Arrays",
+        "Number of Ways to Wear Different Hats to Each Other",
+        "Maximum Students Taking Exam"
+      ]
+    },
+    {
+      "pattern": "Segment Tree / BIT",
+      "count": 16,
+      "problemRefs": [
+        "Count of Smaller Numbers After Self",
+        "Range Sum Query — Mutable",
+        "Falling Squares",
+        "My Calendar III"
+      ]
+    },
+    {
+      "pattern": "Trie",
+      "count": 14,
+      "problemRefs": [
+        "Word Search II",
+        "Design Add and Search Words Data Structure",
+        "Maximum XOR of Two Numbers in an Array",
+        "Replace Words"
+      ]
+    }
+  ],
+  "featuredProblem": {
+    "title": "Burst Balloons",
+    "platform": "LeetCode",
+    "difficulty": "Hard",
+    "problemStatement": "Given n balloons, each assigned a number, burst them in any order. Bursting balloon i earns nums[i-1] * nums[i] * nums[i+1] coins. After it's burst, its neighbors become adjacent. Find the maximum coins collectable.",
+    "approach": "The key inversion is to think about which balloon to burst last within a range, not which to burst first. Define dp[i][j] as the maximum coins obtainable from bursting all balloons strictly between index i and j, with i and j as fixed boundary sentinels. For each candidate k as the last balloon burst in range (i, j), the coins earned are nums[i] * nums[k] * nums[j] plus dp[i][k] + dp[k][j]. The last-burst framing makes the subproblems independent because k's neighbors at burst time are always i and j — no ambiguity from earlier bursts.",
+    "complexity": {
+      "time": "O(n³)",
+      "space": "O(n²)"
+    },
+    "keyInsight": "Reframe the problem from first-burst to last-burst. The last balloon popped in any range always has fixed neighbors (the range boundaries), making subproblems cleanly independent and enabling interval DP."
+  },
+  "certifications": [
+    {
+      "domain": "Android Development",
+      "items": [
+        {
+          "title": "Associate Android Developer",
+          "issuer": "Google",
+          "focus": "Android application development fundamentals covering UI, data persistence, background work, and testing with the Android SDK.",
+          "year": 2023
+        },
+        {
+          "title": "Modern Android App Architecture",
+          "issuer": "Google — Android Developers",
+          "focus": "Jetpack architecture components, unidirectional data flow, and the official Guide to App Architecture.",
+          "year": 2022
+        }
+      ]
+    },
+    {
+      "domain": "Backend & Cloud",
+      "items": [
+        {
+          "title": "Google Cloud Associate Cloud Engineer",
+          "issuer": "Google Cloud",
+          "focus": "Deploying and managing compute, storage, and networking resources on Google Cloud Platform.",
+          "year": 2023
+        },
+        {
+          "title": "Docker Fundamentals",
+          "issuer": "Docker, Inc.",
+          "focus": "Container lifecycle management, multi-stage builds, Docker Compose orchestration, and image optimization.",
+          "year": 2022
+        }
+      ]
+    },
+    {
+      "domain": "System Design",
+      "items": [
+        {
+          "title": "Grokking Modern System Design",
+          "issuer": "Educative",
+          "focus": "Distributed systems patterns: consistent hashing, CAP theorem, load balancing, caching strategies, and scalability trade-offs.",
+          "year": 2023
+        }
+      ]
+    }
+  ]
+}
