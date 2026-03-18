@@ -1,0 +1,1 @@
+export type OverlayId = 'terminal' | 'quiz-modal' | 'notification'
