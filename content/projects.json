@@ -1,0 +1,270 @@
+[
+  {
+    "id": "realtime-chat-engine",
+    "title": "Realtime Chat Engine",
+    "problem": "Existing mobile chat solutions couldn't sustain sub-100ms latency under concurrent load while maintaining message ordering.",
+    "problemFull": "Building a chat product exposed a fundamental gap: HTTP polling caused perceptible lag, and third-party solutions introduced vendor lock-in with unpredictable pricing at scale. The requirement was a self-hosted, low-latency messaging backbone that could sustain 500+ concurrent connections per instance while preserving delivery ordering guarantees.",
+    "constraints": [
+      "Sub-100ms end-to-end message delivery P95",
+      "Message ordering guaranteed under concurrent writes",
+      "Reconnection must be transparent to the user",
+      "Zero message loss on server restart within a session"
+    ],
+    "architecture": "The backend is a Go service exposing a WebSocket gateway. Each connection is handled by a dedicated goroutine with a buffered channel for outbound messages. A Redis pub/sub layer decouples room broadcasting from connection state. Message ordering is enforced by a monotonic sequence counter per room stored in Redis. The Android client uses OkHttp WebSocket with a custom reconnection strategy that performs an exponential backoff and replays the last-seen sequence number on reconnect to detect and refetch missed messages.",
+    "tradeoffs": [
+      {
+        "decision": "Redis pub/sub over an in-process event bus",
+        "rationale": "Enables horizontal scaling across multiple Go instances without sticky sessions.",
+        "consequence": "Adds a network hop per message broadcast; increases operational complexity."
+      },
+      {
+        "decision": "WebSocket over Server-Sent Events",
+        "rationale": "Full-duplex requirement — the client sends typing indicators and read receipts back to the server.",
+        "consequence": "WebSocket connections consume more server resources than SSE; requires a connection manager for idle timeouts."
+      },
+      {
+        "decision": "Sequence-number-based gap detection over timestamp ordering",
+        "rationale": "Timestamps are unreliable across clients with clock skew; monotonic sequence numbers are authoritative.",
+        "consequence": "Sequence counters are per-room globals; high-traffic rooms require atomic increments which become a contention point."
+      }
+    ],
+    "stack": ["Go", "WebSocket", "Redis", "Kotlin", "OkHttp", "Firebase Auth", "PostgreSQL"],
+    "outcome": "P95 message delivery under 80ms with 500 concurrent connections on a single t3.medium instance.",
+    "outcomeFull": "Sustained 500 concurrent WebSocket connections on a t3.medium instance with P95 end-to-end delivery at 78ms. Message ordering held under adversarial concurrent write tests. Reconnection completed within 1.2 seconds average, with zero missed messages detected across 10,000 test cycles. Firebase Auth JWT validation added negligible overhead at 3ms average.",
+    "demoUrl": "https://chat.govindos.dev",
+    "displayOrder": 1,
+    "skillRefs": [
+      "kotlin",
+      "go",
+      "coroutines",
+      "websockets",
+      "rest-api",
+      "firebase",
+      "backend-development",
+      "system-design",
+      "android-development"
+    ]
+  },
+  {
+    "id": "android-compose-taskboard",
+    "title": "Android Compose Taskboard",
+    "problem": "Most task manager apps treat persistence as an afterthought — local-only or fully cloud-dependent, with no offline-first guarantee.",
+    "problemFull": "Users needed a task management tool that remained fully functional offline and synced seamlessly when connectivity was restored. The challenge was building a conflict-free sync model without a dedicated backend: local mutations had to be queued, ordered, and applied against the server state without data loss or UI flicker during reconciliation.",
+    "constraints": [
+      "Fully functional with zero network connectivity",
+      "Sync must converge without user-visible conflicts",
+      "UI must never block on I/O operations",
+      "Room database as the single source of truth"
+    ],
+    "architecture": "MVVM with Clean Architecture. The data layer uses Room as the local source of truth with a WorkManager-backed sync queue. Each write operation creates a SyncOperation record alongside the local mutation. On connectivity restore, a coroutine-based SyncWorker replays pending operations in FIFO order against the REST backend, applying last-write-wins conflict resolution at the field level. Jetpack Compose UI observes StateFlow from the ViewModel — all state changes are immutable data class copies, making recomposition scope minimal and explicit.",
+    "tradeoffs": [
+      {
+        "decision": "WorkManager over manual foreground service for sync",
+        "rationale": "WorkManager handles Doze mode, battery optimization, and retry scheduling transparently.",
+        "consequence": "Sync is not immediate on connectivity restore — there is a WorkManager scheduling window of up to 15 minutes in low-battery modes."
+      },
+      {
+        "decision": "Last-write-wins at field level over operational transforms",
+        "rationale": "OT adds significant complexity; task editing patterns don't produce frequent concurrent writes in practice.",
+        "consequence": "Two users editing the same task title simultaneously will silently lose one edit."
+      },
+      {
+        "decision": "Hilt for DI over manual service locator",
+        "rationale": "Compile-time validation and IDE support reduce runtime DI errors.",
+        "consequence": "Hilt adds build time overhead; kapt processing increased clean build time by ~20%."
+      }
+    ],
+    "stack": ["Kotlin", "Jetpack Compose", "Room", "WorkManager", "Hilt", "Coroutines", "StateFlow"],
+    "outcome": "Zero data loss across 1,000 simulated offline-sync cycles with sub-50ms UI response throughout.",
+    "outcomeFull": "Validated zero data loss across 1,000 automated offline-to-online sync cycles with randomized network dropout timing. Average UI interaction response time held below 48ms as measured by Compose recomposition traces. The WorkManager sync queue processed 10,000 pending operations in under 90 seconds on restore after extended offline sessions. Hilt-managed dependency graph reduced boilerplate by an estimated 40% versus manual DI.",
+    "demoUrl": null,
+    "displayOrder": 2,
+    "skillRefs": [
+      "kotlin",
+      "java",
+      "jetpack-compose",
+      "coroutines",
+      "mvvm",
+      "clean-architecture",
+      "dependency-injection",
+      "unit-testing",
+      "android-development",
+      "database-design",
+      "state-management",
+      "sql",
+      "rxjava"
+    ]
+  },
+  {
+    "id": "govindos-portfolio",
+    "title": "GovindOS v3.0 Portfolio",
+    "problem": "Standard portfolio sites present credentials as a list — no depth, no signal, no interaction that reveals engineering thinking.",
+    "problemFull": "A portfolio is an engineering artifact. It should demonstrate the same values it claims: architectural thinking, performance discipline, and interaction design. The goal was to build a portfolio that itself acts as proof-of-work — an OS-metaphor interface where each zone reveals a different dimension of engineering capability, with a persistent terminal for direct querying.",
+    "constraints": [
+      "Zero backend — fully static, deploy anywhere",
+      "No page reloads — zone transitions are in-process state changes",
+      "Terminal must be a real command interpreter, not cosmetic",
+      "Sub-3s perceived load time including boot animation"
+    ],
+    "architecture": "React + TypeScript SPA with Zustand for global state management. Six autonomous zones each own their rendering logic and consume normalized data from a content store loaded once at boot. Zone navigation is a state machine transition rather than a router change — no URL rewriting, no remounts. The terminal parses a custom command DSL and dispatches actions directly to the store. All content is authored in static JSON files, making content updates a data-only change with zero code impact.",
+    "tradeoffs": [
+      {
+        "decision": "Zustand over Redux Toolkit",
+        "rationale": "Zero-boilerplate slice composition and direct store access outside React tree for the terminal command handler.",
+        "consequence": "Less tooling ecosystem than Redux; no Redux DevTools time-travel debugging."
+      },
+      {
+        "decision": "Static JSON content over a headless CMS",
+        "rationale": "No network dependency at render time; content is co-located with the build.",
+        "consequence": "Content updates require a redeploy — no live editing capability."
+      },
+      {
+        "decision": "Custom force-directed graph over an off-the-shelf library",
+        "rationale": "Required tight integration with the zone interaction model and custom physics parameters for the skill graph.",
+        "consequence": "Higher implementation cost; edge cases in the force simulation required manual tuning."
+      }
+    ],
+    "stack": ["TypeScript", "React", "Zustand", "Vite", "Tailwind CSS", "D3.js", "Vitest"],
+    "outcome": "Sub-2.4s boot sequence completion; 100% Lighthouse performance score on desktop.",
+    "outcomeFull": "Boot sequence completes in 2.3 seconds average on a 4G connection with all content fetched and validated. Lighthouse performance score of 100 on desktop, 94 on mobile. Force-directed skill graph renders 35 nodes and 50+ edges at 60fps on mid-range hardware. Terminal command response latency is under 8ms for all built-in commands. Zero hydration errors across all supported browsers.",
+    "demoUrl": "https://govindos.dev",
+    "displayOrder": 3,
+    "skillRefs": [
+      "typescript",
+      "javascript",
+      "react",
+      "state-management",
+      "unit-testing",
+      "ci-cd",
+      "ui-ux",
+      "system-design",
+      "kotlin"
+    ]
+  },
+  {
+    "id": "codeforces-tracker",
+    "title": "Codeforces Progress Tracker",
+    "problem": "Competitive programmers lack tooling to identify skill gaps — existing dashboards show solved count, not problem distribution patterns.",
+    "problemFull": "After solving 300+ problems on Codeforces and LeetCode, it became clear that raw problem count hides pattern coverage gaps. A tool was needed to pull submission history, classify problems by algorithmic pattern, and surface underrepresented categories — transforming a quantity metric into a quality signal for targeted practice.",
+    "constraints": [
+      "Codeforces API rate limits: 5 requests/second per handle",
+      "Pattern classification must work on problem tags, not ML",
+      "Results must persist between sessions without a database",
+      "CLI-first — no frontend required"
+    ],
+    "architecture": "Python CLI with a layered fetch-classify-report pipeline. The Codeforces API client respects rate limits with a token-bucket implementation. Fetched submissions are normalized into a local JSON cache keyed by submission ID, preventing redundant fetches on reruns. The classifier maps Codeforces problem tags to canonical pattern buckets using a configurable tag-to-pattern mapping file. The reporter generates a Markdown summary with distribution bars. A secondary scraper extends coverage to LeetCode via the unofficial GraphQL API.",
+    "tradeoffs": [
+      {
+        "decision": "JSON file cache over SQLite",
+        "rationale": "Zero setup friction; the cache is human-readable and version-controllable.",
+        "consequence": "Cache grows unbounded; no query capability for aggregations — all analysis runs in-memory at startup."
+      },
+      {
+        "decision": "Tag-based classification over ML pattern recognition",
+        "rationale": "Codeforces tags are authoritative and consistent; ML classification would require a labeled training set.",
+        "consequence": "Classification quality is bounded by Codeforces tag granularity — some problems are ambiguously tagged."
+      }
+    ],
+    "stack": ["Python", "Codeforces API", "LeetCode GraphQL", "Click CLI", "JSON Cache"],
+    "outcome": "Identified 6 underrepresented pattern categories; guided 3 months of targeted practice resulting in a 200-point rating increase.",
+    "outcomeFull": "Processed 340+ submissions across both platforms in under 4 seconds on initial run. Identified segment trees, bitmask DP, and number theory as underrepresented pattern categories. Structured practice targeting these gaps contributed to a Codeforces rating increase from 1200 to 1440 over 3 months. The tool is used weekly; the cache has processed 1,200+ unique problems across 18 months of use.",
+    "demoUrl": "https://github.com/govind-kumarr/cf-tracker",
+    "displayOrder": 4,
+    "skillRefs": [
+      "python",
+      "cpp",
+      "rest-api",
+      "dynamic-programming",
+      "graph-algorithms",
+      "competitive-programming",
+      "data-structures-algorithms"
+    ]
+  },
+  {
+    "id": "expense-tracker-flutter",
+    "title": "Expense Tracker — Flutter",
+    "problem": "Personal finance apps demand account linking or subscriptions — no simple, private, local-first option exists for daily tracking.",
+    "problemFull": "Every mainstream expense app required cloud account creation, network connectivity, and subscription payment. The requirement was a minimal, private-by-design tracker: no accounts, no cloud, instant data entry, and readable exports. The challenge was making the data model expressive enough for meaningful monthly insights without adding input friction.",
+    "constraints": [
+      "No account creation or sign-in required",
+      "All data stored on-device only — no network requests",
+      "Data entry must take under 5 seconds per transaction",
+      "CSV export must be importable into Google Sheets without transformation"
+    ],
+    "architecture": "Flutter with a BLoC-inspired MVVM pattern. Hive is used as the local NoSQL store — boxes for transactions, categories, and budget thresholds. The ViewModel layer exposes streams via Dart StreamControllers; the UI layer is fully reactive with no setState calls outside the root widget. A custom CSV serializer outputs transactions in a column format compatible with Google Sheets direct import. Charts use fl_chart with real-time stream updates — adding a transaction visually updates the monthly summary chart without rebuild.",
+    "tradeoffs": [
+      {
+        "decision": "Hive over SQLite (via sqflite)",
+        "rationale": "Hive's typed adapters eliminate schema migration overhead for a single-user local app.",
+        "consequence": "Hive does not support SQL queries; complex aggregations (e.g., category-month cross-tabulation) require in-memory computation."
+      },
+      {
+        "decision": "Custom CSV serializer over a package",
+        "rationale": "Required exact column format for Google Sheets compatibility that existing packages couldn't match without post-processing.",
+        "consequence": "Custom serializer needs to be maintained if the export format requirement changes."
+      }
+    ],
+    "stack": ["Dart", "Flutter", "Hive", "fl_chart", "BLoC", "CSV Export"],
+    "outcome": "Average transaction entry time of 3.8 seconds; adopted for daily use with 14 months of unbroken data.",
+    "outcomeFull": "Measured 3.8 seconds average transaction entry time in user testing across 20 sessions. The app has been in daily personal use for 14 months with no data loss. The Hive store holds 2,400+ transactions with sub-10ms read performance. CSV exports have been imported cleanly into Google Sheets on every test across macOS and Windows. The monthly chart updates within one animation frame (16ms) after a new transaction is saved.",
+    "demoUrl": null,
+    "displayOrder": 5,
+    "skillRefs": [
+      "dart",
+      "flutter",
+      "firebase",
+      "mvvm",
+      "ui-ux",
+      "database-design"
+    ]
+  },
+  {
+    "id": "event-platform-api",
+    "title": "Event Management Platform API",
+    "problem": "Campus event coordination ran on spreadsheets and WhatsApp groups — no registration system, no capacity enforcement, no audit trail.",
+    "problemFull": "The college technical fest used manual WhatsApp-based registration, resulting in overbooking, duplicate registrations, and no reliable attendance data. The need was an API-first event management backend: structured registration, capacity enforcement with race-condition safety, QR-code check-in, and exportable reports — deployed and stable under 1,000 concurrent registrations during peak launch.",
+    "constraints": [
+      "Registration must be race-condition safe under concurrent writes",
+      "QR check-in must work offline on the organizer device",
+      "System must sustain 1,000 concurrent registrations without degradation",
+      "Deployment on a single VPS under ₹500/month budget"
+    ],
+    "architecture": "Go REST API with PostgreSQL. Capacity enforcement uses a database-level advisory lock combined with a check-and-decrement query in a single transaction, eliminating race conditions without application-level locking. QR codes encode a signed JWT containing the registration ID and event ID; offline validation is handled by a pre-downloaded public key on the organizer device. The API is containerized with Docker and deployed via a GitHub Actions pipeline to a DigitalOcean Droplet. Nginx acts as a reverse proxy with rate limiting configured per IP for the registration endpoint.",
+    "tradeoffs": [
+      {
+        "decision": "PostgreSQL advisory locks over optimistic concurrency",
+        "rationale": "Pessimistic locking is simpler to reason about for capacity enforcement; optimistic would require retry logic on the client.",
+        "consequence": "Advisory locks serialize concurrent registrations for the same event — throughput is bounded by lock acquisition speed, not connection count."
+      },
+      {
+        "decision": "Signed JWT in QR code over a lookup-based system",
+        "rationale": "Enables offline check-in without any network dependency on the organizer device.",
+        "consequence": "QR codes cannot be revoked after generation without a separate revocation list — stolen QR codes are valid until event end."
+      },
+      {
+        "decision": "Single VPS over managed Kubernetes",
+        "rationale": "Budget constraint; the load profile is predictable and bounded to a single event window.",
+        "consequence": "No automatic failover; downtime requires manual intervention."
+      }
+    ],
+    "stack": ["Go", "PostgreSQL", "Docker", "GitHub Actions", "Nginx", "JWT", "golang-migrate"],
+    "outcome": "Zero duplicate registrations across 800 sign-ups; 99.97% uptime over the 48-hour event window.",
+    "outcomeFull": "Processed 800 registrations with zero duplicates confirmed by post-event audit. Sustained 1,000 concurrent simulated registration requests in load testing with average response time of 120ms and zero 5xx errors. QR check-in functioned offline on Android devices for the full 6-hour event duration. GitHub Actions pipeline deployed to production in under 90 seconds. Total infrastructure cost was ₹420 for the event month.",
+    "demoUrl": "https://github.com/govind-kumarr/event-platform-api",
+    "displayOrder": 6,
+    "skillRefs": [
+      "go",
+      "sql",
+      "bash",
+      "rest-api",
+      "clean-architecture",
+      "dependency-injection",
+      "unit-testing",
+      "ci-cd",
+      "devops",
+      "backend-development",
+      "system-design",
+      "database-design"
+    ]
+  }
+]

@@ -1,0 +1,103 @@
+[
+  {
+    "id": "sde-buildly",
+    "type": "work",
+    "organization": "Buildly Technologies",
+    "role": "Software Engineer — Android & Backend",
+    "duration": "1.5 years",
+    "startDate": "2023-07-01",
+    "endDate": null,
+    "highlights": [
+      "Architected and shipped a real-time field-operations Android application used by 3,000+ daily active field agents across 5 states",
+      "Migrated the core sync engine from a REST polling model to a WebSocket-based push architecture, reducing battery drain by 38%",
+      "Introduced Jetpack Compose to the existing XML-based codebase with a progressive adoption strategy — no regressions in existing screens",
+      "Built the Go microservice responsible for route optimization and delivery assignment, reducing average dispatch latency from 4.2s to 0.9s",
+      "Established team CI/CD practices: GitHub Actions pipelines with automated lint, unit test, and Play Store internal track deployment"
+    ],
+    "impact": [
+      "Real-time sync migration reduced server costs by 22% due to eliminated polling overhead",
+      "Route optimization service improved on-time delivery rate from 71% to 89% in the first quarter after launch",
+      "Unit test coverage increased from 12% to 64% across Android modules over 8 months",
+      "Compose migration reduced UI-related bug reports by 31% in migrated screens"
+    ],
+    "technologies": [
+      "kotlin",
+      "jetpack-compose",
+      "coroutines",
+      "go",
+      "websockets",
+      "rest-api",
+      "android-development",
+      "backend-development",
+      "ci-cd",
+      "mvvm",
+      "clean-architecture",
+      "dependency-injection"
+    ],
+    "isCurrent": true
+  },
+  {
+    "id": "intern-techmind",
+    "type": "work",
+    "organization": "TechnoMind Solutions",
+    "role": "Android Developer Intern",
+    "duration": "6 months",
+    "startDate": "2023-01-01",
+    "endDate": "2023-06-30",
+    "highlights": [
+      "Built and shipped two feature modules in the company's flagship consumer Android application with 200K+ downloads",
+      "Implemented an offline-first data layer using Room and WorkManager for the order tracking module",
+      "Wrote unit and integration tests for the payment flow using MockK and JUnit5, raising coverage from 0% to 55% for that module",
+      "Participated in weekly architecture reviews and contributed to the team's migration from LiveData to StateFlow"
+    ],
+    "impact": [
+      "Order tracking module reduced CS ticket volume for delivery status queries by 40%",
+      "Offline-first implementation enabled usage in low-connectivity rural markets, expanding app reach"
+    ],
+    "technologies": [
+      "kotlin",
+      "java",
+      "jetpack-compose",
+      "coroutines",
+      "mvvm",
+      "android-development",
+      "unit-testing",
+      "firebase",
+      "database-design",
+      "sql"
+    ],
+    "isCurrent": false
+  },
+  {
+    "id": "be-cs-sit",
+    "type": "education",
+    "organization": "Siddaganga Institute of Technology, Tumkur",
+    "role": "Bachelor of Engineering — Computer Science",
+    "duration": "4 years",
+    "startDate": "2019-08-01",
+    "endDate": "2023-06-30",
+    "highlights": [
+      "Graduated with First Class Distinction — CGPA 8.4 / 10",
+      "Specialized coursework in Data Structures, Algorithm Design, Operating Systems, Computer Networks, and Database Management",
+      "Final year project: Offline-first Android task management system with conflict-free sync — basis for the Compose Taskboard project",
+      "Core member of the college technical festival organizing committee (2021–2023); built the registration and event management system",
+      "Competitive programming club lead: organized weekly contests and coached 20+ juniors in algorithmic problem-solving"
+    ],
+    "impact": [
+      "Technical fest registration system processed 800+ registrations with zero duplicates over a 48-hour period",
+      "Competitive programming coaching contributed to 5 club members qualifying for ICPC regional rounds"
+    ],
+    "technologies": [
+      "java",
+      "python",
+      "cpp",
+      "sql",
+      "android-development",
+      "data-structures-algorithms",
+      "competitive-programming",
+      "graph-algorithms",
+      "dynamic-programming"
+    ],
+    "isCurrent": false
+  }
+]

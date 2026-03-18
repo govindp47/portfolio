@@ -1,0 +1,47 @@
+{
+  "name": "Govind",
+  "version": "3.0",
+  "role": "Software Engineer — Android & Backend",
+  "stack": "Kotlin | Android | Go | TypeScript",
+  "metrics": [
+    {
+      "label": "Projects Deployed",
+      "value": "12+",
+      "tooltip": "Production-grade applications shipped across Android and backend platforms"
+    },
+    {
+      "label": "Years Experience",
+      "value": "3+",
+      "tooltip": "Professional engineering experience since 2022, spanning internships and full-time roles"
+    },
+    {
+      "label": "Problems Solved",
+      "value": "340+",
+      "tooltip": "Competitive programming problems solved across LeetCode and Codeforces"
+    },
+    {
+      "label": "GitHub Contributions",
+      "value": "800+",
+      "tooltip": "Total commits and contributions across personal and open-source repositories"
+    },
+    {
+      "label": "Certifications",
+      "value": "5",
+      "tooltip": "Industry certifications in Android development, cloud, and system design"
+    },
+    {
+      "label": "Open Source PRs",
+      "value": "18",
+      "tooltip": "Merged pull requests to open-source repositories on GitHub"
+    }
+  ],
+  "contact": {
+    "email": "govind@govindos.dev",
+    "preferCopy": true
+  },
+  "links": {
+    "github": "https://github.com/govind-kumarr",
+    "linkedin": "https://linkedin.com/in/govind-kumarr"
+  },
+  "resumeAssetPath": "/resume.pdf"
+}
