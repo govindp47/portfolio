@@ -16,7 +16,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
-import { loadContent } from './contentLoader'
+import { loadContent } from '../contentLoader'
 import type {
   Project,
   Skill,
