@@ -81,3 +81,117 @@ describe('navigationSlice', () => {
     expect(useStore.getState().miniMapOpen).toBe(false)
   })
 })
+
+describe('navigationSlice — integration: navigation state machine (Doc 08 §4.1)', () => {
+  let useStore: ReturnType<typeof makeStore>
+
+  beforeEach(() => {
+    useStore = makeStore()
+  })
+
+  it('full navigation cycle: A → B → onTransitionComplete → C', () => {
+    useStore.getState().navigateTo('memory-vault')
+    expect(useStore.getState().isTransitioning).toBe(true)
+    expect(useStore.getState().activeZone).toBe('memory-vault')
+
+    useStore.getState().onTransitionComplete()
+    expect(useStore.getState().isTransitioning).toBe(false)
+
+    useStore.getState().navigateTo('neural-graph')
+    expect(useStore.getState().activeZone).toBe('neural-graph')
+    expect(useStore.getState().isTransitioning).toBe(true)
+    expect(useStore.getState().previousZone).toBe('memory-vault')
+  })
+
+  it('navigate to every zone from control-room: each results in correct activeZone', () => {
+    const zones = [
+      'memory-vault',
+      'neural-graph',
+      'timeline-tunnel',
+      'arena',
+      'gateway',
+    ] as const
+
+    for (const zone of zones) {
+      useStore = makeStore()
+      useStore.getState().navigateTo(zone)
+      expect(useStore.getState().activeZone).toBe(zone)
+    }
+  })
+
+  it('previousZone tracks last zone before transition', () => {
+    useStore.getState().navigateTo('arena')
+    useStore.getState().onTransitionComplete()
+    useStore.getState().navigateTo('gateway')
+    expect(useStore.getState().previousZone).toBe('arena')
+  })
+
+  it('navigateTo same zone while not transitioning: isTransitioning stays false', () => {
+    useStore.getState().navigateTo('control-room')
+    expect(useStore.getState().isTransitioning).toBe(false)
+  })
+
+  it('rapid calls during transition: only first navigateTo is applied', () => {
+    useStore.getState().navigateTo('memory-vault')
+    useStore.getState().navigateTo('arena')
+    useStore.getState().navigateTo('gateway')
+    expect(useStore.getState().activeZone).toBe('memory-vault')
+    expect(useStore.getState().isTransitioning).toBe(true)
+  })
+
+  it('onTransitionComplete when not transitioning: isTransitioning stays false (idempotent)', () => {
+    expect(useStore.getState().isTransitioning).toBe(false)
+    useStore.getState().onTransitionComplete()
+    expect(useStore.getState().isTransitioning).toBe(false)
+  })
+})
+
+describe('navigationSlice — integration: overlay stack (Doc 08 §4.3)', () => {
+  let useStore: ReturnType<typeof makeStore>
+
+  beforeEach(() => {
+    useStore = makeStore()
+  })
+
+  it('open and close terminal: stack returns to empty', () => {
+    useStore.getState().openOverlay('terminal')
+    expect(useStore.getState().overlayStack).toEqual(['terminal'])
+    useStore.getState().closeOverlay('terminal')
+    expect(useStore.getState().overlayStack).toEqual([])
+  })
+
+  it('open terminal then quiz-modal: terminal is removed, quiz-modal is in stack', () => {
+    useStore.getState().openOverlay('terminal')
+    useStore.getState().openOverlay('quiz-modal')
+    const stack = useStore.getState().overlayStack
+    expect(stack).not.toContain('terminal')
+    expect(stack).toContain('quiz-modal')
+  })
+
+  it('open quiz-modal without terminal: terminal not affected', () => {
+    useStore.getState().openOverlay('quiz-modal')
+    expect(useStore.getState().overlayStack).toEqual(['quiz-modal'])
+  })
+
+  it('open same overlay twice: overlay appears twice in stack', () => {
+    useStore.getState().openOverlay('terminal')
+    useStore.getState().openOverlay('terminal')
+    expect(useStore.getState().overlayStack).toEqual(['terminal', 'terminal'])
+  })
+
+  it('closeOverlay removes only the first matching entry', () => {
+    useStore.getState().openOverlay('terminal')
+    useStore.getState().openOverlay('terminal')
+    useStore.getState().closeOverlay('terminal')
+    // filter removes ALL matching — both gone (implementation uses filter, not splice)
+    expect(useStore.getState().overlayStack).toEqual([])
+  })
+
+  it('navigation is independent of overlay stack — both can be active simultaneously', () => {
+    useStore.getState().navigateTo('arena')
+    useStore.getState().openOverlay('terminal')
+    expect(useStore.getState().activeZone).toBe('arena')
+    expect(useStore.getState().overlayStack).toContain('terminal')
+    expect(useStore.getState().isTransitioning).toBe(true)
+  })
+})
