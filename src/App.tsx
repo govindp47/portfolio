@@ -8,8 +8,9 @@ import OverlayPlane from '@/overlays/OverlayPlane'
 import BootSequence from '@/boot/BootSequence'
 
 export default function App() {
-  const bootPlayed    = useStore((s) => s.bootPlayed)
-  const contentLoaded = useStore((s) => s.contentLoaded)
+  const bootPlayed        = useStore((s) => s.bootPlayed)
+  const contentLoaded     = useStore((s) => s.contentLoaded)
+  const activeMode        = useStore((s) => s.activeMode)
   const markContentLoaded = useStore((s) => s.markContentLoaded)
   const loadContentAction = useStore((s) => s.loadContent)
   const markBootPlayed    = useStore((s) => s.markBootPlayed)
@@ -22,12 +23,24 @@ export default function App() {
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── Safe Mode boot-skip ─────────────────────────────────────────────────────
+  // Per Doc 04 §7: Safe Mode never shows the boot sequence.
+  useEffect(() => {
+    if (activeMode === 'safe' && !bootPlayed) {
+      markBootPlayed()
+    }
+  }, [activeMode, bootPlayed, markBootPlayed])
+
   const handleBootComplete = useCallback(() => {
     markBootPlayed()
+    // Prefetch remaining zone chunks using idle network capacity (Doc 07 §3.2)
+    void import('@/zones/memory-vault/MemoryVaultZone')
+    void import('@/zones/timeline-tunnel/TimelineTunnelZone')
+    void import('@/zones/arena/ArenaZone')
+    void import('@/zones/gateway/GatewayZone')
   }, [markBootPlayed])
 
   // ── Render: loading ─────────────────────────────────────────────────────────
-  // Boot overlay covers this; keep it transparent so there's no flash.
   if (!contentLoaded) {
     return <div style={{ width: '100vw', height: '100vh', background: 'var(--color-bg)' }} />
   }
@@ -42,10 +55,10 @@ export default function App() {
     <div
       id="app-shell"
       style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden',
+        position:   'relative',
+        width:      '100vw',
+        height:     '100vh',
+        overflow:   'hidden',
         background: 'var(--color-bg)',
       }}
     >
