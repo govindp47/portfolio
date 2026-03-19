@@ -13,19 +13,21 @@ import type {
 // ─── 2.1 Navigation Slice ─────────────────────────────────────────────────────
 
 export interface NavigationState {
-  activeZone: ZoneId
-  previousZone: ZoneId | null
+  activeZone:     ZoneId
+  previousZone:   ZoneId | null
   isTransitioning: boolean
-  overlayStack: OverlayId[]
-  miniMapOpen: boolean
+  overlayStack:   OverlayId[]
+  miniMapOpen:    boolean
+  zoneEntryHint:  Record<string, unknown> | null   // ← NEW
 }
 
 export interface NavigationActions {
-  navigateTo: (zoneId: ZoneId) => void
-  openOverlay: (overlayId: OverlayId) => void
-  closeOverlay: (overlayId: OverlayId) => void
-  toggleMiniMap: () => void
+  navigateTo:         (zoneId: ZoneId) => void
+  openOverlay:        (overlayId: OverlayId) => void
+  closeOverlay:       (overlayId: OverlayId) => void
+  toggleMiniMap:      () => void
   onTransitionComplete: () => void
+  setZoneEntryHint:   (hint: Record<string, unknown> | null) => void  // ← NEW
 }
 
 // ─── 2.2 Mode Slice ───────────────────────────────────────────────────────────
@@ -59,6 +61,7 @@ export interface TerminalActions {
   submitCommand: (input: string) => void
   clearHistory: () => void
   setInputBuffer: (value: string) => void
+  addSuggestionOutput: (content: string) => void   // ← NEW
 }
 
 // ─── 2.4 Game Layer Slice ─────────────────────────────────────────────────────
