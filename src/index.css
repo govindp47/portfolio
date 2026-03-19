@@ -26,6 +26,12 @@ body,
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── HUD height token ─────────────────────────────────────── */
+:root {
+  /* Height of the fixed top HUD bar — zones must not render content behind this */
+  --hud-height: 48px;
+}
+
 /* ─── Reduced-motion global override ──────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
