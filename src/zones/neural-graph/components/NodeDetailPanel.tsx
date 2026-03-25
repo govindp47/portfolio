@@ -4,6 +4,7 @@ import { BodyText } from '@/core/design-system/typography'
 import { useNavigate } from '@/core/hooks/useNavigate'
 import { useReducedMotion } from '@/core/hooks/useReducedMotion'
 import type { Skill } from '@/core/types/content'
+import { useStore } from '@/core/hooks/useStore'
 
 interface NodeDetailPanelProps {
   skill:          Skill | null
@@ -25,6 +26,7 @@ export function NodeDetailPanel({
 }: NodeDetailPanelProps) {
   const { navigateTo } = useNavigate()
   const reducedMotion  = useReducedMotion()
+  const setZoneEntryHint = useStore((s) => s.setZoneEntryHint)
 
   if (skill === null) return null
 
@@ -38,8 +40,9 @@ export function NodeDetailPanel({
 
   const depthLabel = skill.depth.charAt(0).toUpperCase() + skill.depth.slice(1)
   const typeLabel  = skill.type.charAt(0).toUpperCase()  + skill.type.slice(1)
-
+  
   function handleProjectsClick() {
+    setZoneEntryHint({ filterSkillId: skill!.id })
     navigateTo('memory-vault')
     onClose()
   }

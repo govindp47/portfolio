@@ -6,4 +6,3 @@ export { resolveSkillLabel, resolveProjectTitle } from './idResolver'
 export { readSession, writeSession, clearSession } from './sessionStorage'
 
 export { commandRegistry } from './commandRegistry'
-export type { CommandRegistry } from './commandRegistry'

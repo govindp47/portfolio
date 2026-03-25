@@ -3,9 +3,11 @@ import { GlassPanel } from '@/core/design-system/components'
 import { useMode } from '@/core/hooks/useMode'
 import { useSkills, useEdges } from '@/core/hooks/useContent'
 import { useReducedMotion } from '@/core/hooks/useReducedMotion'
+import { useStore } from '@/core/hooks/useStore'
 import { zoneEntryVariants } from '@/core/utils/animationVariants'
 import GraphCanvas from './components/GraphCanvas'
 import GraphListFallback from './components/GraphListFallback'
+import { ChallengePrompt } from './components/ChallengePrompt'
 
 /**
  * NeuralGraphZone root.
@@ -16,11 +18,18 @@ import GraphListFallback from './components/GraphListFallback'
  * The wrapper fills 100% of the ZonePlane area (already offset below HUD).
  * GraphCanvas gets the full area; its SVG fills it and D3 reads real dimensions.
  */
+
+const NEURAL_GRAPH_CHALLENGE = {
+  id:      'neural-graph-hover-challenge',
+  message: 'Try hovering a node to explore its connections →',
+}
+
 export default function NeuralGraphZone() {
   const { activeMode, capabilities } = useMode()
-  const skills        = useSkills()
-  const edges         = useEdges()
-  const reducedMotion = useReducedMotion()
+  const skills           = useSkills()
+  const edges            = useEdges()
+  const reducedMotion    = useReducedMotion()
+  const dismissChallenge = useStore((s) => s.dismissChallenge)
 
   const useFallback =
     capabilities.animationLevel === 'none' ||
@@ -50,13 +59,23 @@ export default function NeuralGraphZone() {
     <motion.div style={wrapperStyle} {...motionProps}>
       {useFallback
         ? <GraphListFallback skills={skills} />
-        : <GraphCanvas skills={skills} edges={edges} />
+        : (
+          <>
+            <GraphCanvas skills={skills} edges={edges} />
+            <ChallengePrompt
+              challengeId={NEURAL_GRAPH_CHALLENGE.id}
+              message={NEURAL_GRAPH_CHALLENGE.message}
+              onDismiss={() => dismissChallenge(NEURAL_GRAPH_CHALLENGE.id)}
+            />
+          </>
+        )
       }
     </motion.div>
   )
 }
 
 const wrapperStyle: React.CSSProperties = {
+  position: 'relative',
   width:    '100%',
   height:   '100%',
   overflow: 'hidden',
