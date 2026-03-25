@@ -9,6 +9,12 @@ import { zoneEntryVariants } from '@/core/utils/animationVariants'
 import { useStore } from '@/core/hooks/useStore'
 import { ProjectCard } from './components/ProjectCard'
 import { useProjectAccordion } from './hooks/useProjectAccordion'
+import { ChallengePrompt } from './components/ChallengePrompt'
+
+const MEMORY_VAULT_CHALLENGE = {
+  id:      'memory-vault-expand-challenge',
+  message: 'Click any project card to explore the full case study →',
+}
 
 // Stagger container: fires on initial mount only.
 // Using a stable variants object prevents re-triggering on accordion changes.
@@ -30,6 +36,8 @@ export default function MemoryVaultZone() {
   const zoneEntryHint    = useStore((s) => s.zoneEntryHint)
   const setZoneEntryHint = useStore((s) => s.setZoneEntryHint)
   const [highlightedSkillId, setHighlightedSkillId] = useState<string | null>(null)
+
+  const dismissChallenge = useStore((s) => s.dismissChallenge)
 
   // Read and immediately clear the zone entry hint on mount
   useEffect(() => {
@@ -75,7 +83,14 @@ export default function MemoryVaultZone() {
       }
 
   return (
-    <motion.div style={outerStyle} {...zoneMotionProps}>
+    <motion.div style={{ ...outerStyle, position: 'relative' }} {...zoneMotionProps}>
+      {/* Challenge prompt — game layer only, bottom of content area */}
+      <ChallengePrompt
+        challengeId={MEMORY_VAULT_CHALLENGE.id}
+        message={MEMORY_VAULT_CHALLENGE.message}
+        onDismiss={() => dismissChallenge(MEMORY_VAULT_CHALLENGE.id)}
+      />
+
       <div style={scrollAreaStyle}>
         <div style={contentStyle}>
           <motion.div style={listStyle} {...listMotionProps}>

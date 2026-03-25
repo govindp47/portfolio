@@ -1,12 +1,15 @@
 import { useEffect, useCallback } from 'react'
 import NavBar from '@/hud/navbar/NavBar'
 import ModeSelector from '@/hud/mode-selector/ModeSelector'
+import GameHud from '@/hud/game-hud/GameHud'
 import { useStore } from '@/core/hooks/useStore'
+import { useMode } from '@/core/hooks/useMode'
 
 export default function HudPlane() {
   const isOpen        = useStore((s) => s.isOpen)
   const openTerminal  = useStore((s) => s.openTerminal)
   const closeTerminal = useStore((s) => s.closeTerminal)
+  const { capabilities } = useMode()
 
   const toggleTerminal = useCallback(() => {
     if (isOpen) closeTerminal()
@@ -57,6 +60,9 @@ export default function HudPlane() {
         <NavBar />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+          {/* Game HUD — Explorer Mode only */}
+          {capabilities.gameLayerActive && <GameHud />}
+
           {/* Terminal toggle button */}
           <button
             type="button"

@@ -25,14 +25,23 @@ export const createNavigationSlice: StateCreator<
   // ─── Actions ───────────────────────────────────────────────────────────────
 
   navigateTo: (zoneId: ZoneId) => {
-    const { activeZone, isTransitioning } = get()
+    const state = get() as NavigationSlice & {
+      activeMode: string
+      unlockedZones: ZoneId[]
+      unlockZone: (id: ZoneId) => void
+    }
+    const { activeZone, isTransitioning, activeMode, unlockedZones, unlockZone } = state
     if (zoneId === activeZone || isTransitioning) return
     set({
       isTransitioning: true,
       previousZone:    activeZone,
       activeZone:      zoneId,
-      zoneEntryHint:   null,           // ← clear hint on every navigation
+      zoneEntryHint:   null,
     })
+    // Game layer side-effect: unlock zone on first visit in Explorer Mode (Doc 04 §9)
+    if (activeMode === 'explorer' && !unlockedZones.includes(zoneId)) {
+      unlockZone(zoneId)
+    }
   },
 
   openOverlay: (overlayId: OverlayId) => {
